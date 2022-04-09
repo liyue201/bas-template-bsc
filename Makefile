@@ -8,6 +8,9 @@
 .PHONY: geth-darwin geth-darwin-386 geth-darwin-amd64
 .PHONY: geth-windows geth-windows-386 geth-windows-amd64
 
+CUR_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+CUR_DIR := $(dir $(CUR_PATH))
+
 GOBIN = ./build/bin
 GO ?= latest
 GORUN = env GO111MODULE=on go run
@@ -16,6 +19,12 @@ geth:
 	$(GORUN) build/ci.go install ./cmd/geth
 	@echo "Done building."
 	@echo "Run \"$(GOBIN)/geth\" to launch geth."
+
+
+build-genesis:
+	git submodule update --init --recursive
+	docker run --rm -v $(CUR_DIR)genesis:/genesis -w /genesis stirlingx/truffle:5.5.7 make clean install compile
+	docker run --rm -v $(CUR_DIR):/bas -w /bas/genesis stirlingx/go:1.16.0 make create-genesis
 
 all:
 	$(GORUN) build/ci.go install
