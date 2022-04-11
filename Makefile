@@ -8,6 +8,9 @@
 .PHONY: geth-darwin geth-darwin-386 geth-darwin-amd64
 .PHONY: geth-windows geth-windows-386 geth-windows-amd64
 
+CUR_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
+CUR_DIR := $(dir $(CUR_PATH))
+
 GOBIN = ./build/bin
 GO ?= latest
 GORUN = env GO111MODULE=on go run
@@ -16,6 +19,40 @@ geth:
 	$(GORUN) build/ci.go install ./cmd/geth
 	@echo "Done building."
 	@echo "Run \"$(GOBIN)/geth\" to launch geth."
+
+build-genesis:
+	git submodule update --init --recursive
+	docker run --rm -v $(CUR_DIR)genesis:/genesis -w /genesis stirlingx/truffle:5.5.7 make clean install compile
+	docker run --rm -v $(CUR_DIR):/bas -w /bas/genesis stirlingx/go:1.16.0 make create-genesis
+
+build-bas:
+	docker build --build-arg GOPROXY=https://goproxy.cn,direct -t bas-template-bsc .
+
+dev-run: dev-down
+	rm -rf /tmp/__BAS__
+	mkdir -p /tmp/__BAS__/genesis
+	cp -rf ./genesis/keystore /tmp/__BAS__/genesis/keystore
+	cp -f ./genesis/devnet.json /tmp/__BAS__/genesis/devnet.json
+	cp -f ./genesis/password.txt /tmp/__BAS__/genesis/password.txt
+	docker-compose -f ./docker-compose.dev.yaml up -d
+
+dev-up:
+	docker-compose -f ./docker-compose.dev.yaml up -d
+
+dev-down:
+	docker-compose -f ./docker-compose.dev.yaml down
+
+dev-start:
+	docker-compose -f ./docker-compose.dev.yaml start
+
+dev-stop:
+	docker-compose -f ./docker-compose.dev.yaml stop
+
+dev-ps:
+	docker-compose -f ./docker-compose.dev.yaml ps
+
+dev-logs:
+	docker-compose -f ./docker-compose.dev.yaml logs -f
 
 all:
 	$(GORUN) build/ci.go install
