@@ -23,9 +23,17 @@ geth:
 build-genesis:
 	git submodule update --init --recursive
 	docker run --rm -v $(CUR_DIR)genesis:/genesis -w /genesis stirlingx/truffle:5.5.7 make clean install compile
-	docker run --rm -v $(CUR_DIR):/bas -w /bas/genesis stirlingx/go:1.16.0 make create-genesis
+	docker run --rm -v $(CUR_DIR):/bas -w /bas/genesis stirlingx/go:1.16 make create-genesis
+
+build-genesis-with-proxy:
+	git submodule update --init --recursive
+	docker run --rm -v $(CUR_DIR)genesis:/genesis -w /genesis stirlingx/truffle:5.5.7 make clean install compile
+	docker run --rm -e GOPROXY=https://goproxy.cn,direct -v $(CUR_DIR):/bas -w /bas/genesis stirlingx/go:1.16 make create-genesis
 
 build-bas:
+	docker build -t bas-template-bsc .
+
+build-bas-with-proxy:
 	docker build --build-arg GOPROXY=https://goproxy.cn,direct -t bas-template-bsc .
 
 dev-run: dev-down
