@@ -44,6 +44,14 @@ dev-run: dev-down
 	cp -f ./genesis/password.txt /tmp/__BAS__/genesis/password.txt
 	docker-compose -f ./docker-compose.dev.yaml up -d
 
+benchmark-run: dev-down
+	rm -rf /tmp/__BAS__
+	mkdir -p /tmp/__BAS__/genesis
+	cp -rf ./genesis/keystore /tmp/__BAS__/genesis/keystore
+	cp -f ./benchmark/devnet.json /tmp/__BAS__/genesis/devnet.json
+	cp -f ./genesis/password.txt /tmp/__BAS__/genesis/password.txt
+	docker-compose -f ./docker-compose.dev.yaml up -d
+
 dev-up:
 	docker-compose -f ./docker-compose.dev.yaml up -d
 
