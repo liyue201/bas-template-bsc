@@ -15,9 +15,13 @@ services:
       - "--http.port=8545"
       - "--http.corsdomain=*"
       - "--http.vhosts=*"
+      - "--ws"
+      - "--ws.addr=0.0.0.0"
+      - "--ws.api=eth,net,web3,debug,trace,txpool"
+      - "--ws.port=8546"
     volumes:
-      - "/tmp/__BAS__/bootnode:/datadir"
-      - "/tmp/__BAS__/genesis/devnet.json:/datadir/devnet.json"
+      - "/__BAS__/bootnode:/datadir"
+      - "/__BAS__/genesis/devnet.json:/datadir/devnet.json"
     ports:
       - "8545:8545"
       - "8546:8546"
@@ -38,10 +42,10 @@ services:
       - "--syncmode=full"
       - "--networkid=17243"
     volumes:
-      - "/tmp/__BAS__/validator_1:/datadir"
-      - "/tmp/__BAS__/genesis/devnet.json:/datadir/devnet.json"
-      - "/tmp/__BAS__/genesis/keystore:/datadir/keystore"
-      - "/tmp/__BAS__/genesis/password.txt:/datadir/password.txt"
+      - "/__BAS__/validator_1:/datadir"
+      - "/__BAS__/genesis/devnet.json:/datadir/devnet.json"
+      - "/__BAS__/genesis/keystore:/datadir/keystore"
+      - "/__BAS__/genesis/password.txt:/datadir/password.txt"
     restart: always
   validator_2:
     image: bas-template-bsc:latest
@@ -58,10 +62,10 @@ services:
       - "--syncmode=full"
       - "--networkid=17243"
     volumes:
-      - "/tmp/__BAS__/validator_2:/datadir"
-      - "/tmp/__BAS__/genesis/devnet.json:/datadir/devnet.json"
-      - "/tmp/__BAS__/genesis/keystore:/datadir/keystore"
-      - "/tmp/__BAS__/genesis/password.txt:/datadir/password.txt"
+      - "/__BAS__/validator_2:/datadir"
+      - "/__BAS__/genesis/devnet.json:/datadir/devnet.json"
+      - "/__BAS__/genesis/keystore:/datadir/keystore"
+      - "/__BAS__/genesis/password.txt:/datadir/password.txt"
     restart: always
   validator_3:
     image: bas-template-bsc:latest
@@ -78,10 +82,10 @@ services:
       - "--syncmode=full"
       - "--networkid=17243"
     volumes:
-      - "/tmp/__BAS__/validator_3:/datadir"
-      - "/tmp/__BAS__/genesis/devnet.json:/datadir/devnet.json"
-      - "/tmp/__BAS__/genesis/keystore:/datadir/keystore"
-      - "/tmp/__BAS__/genesis/password.txt:/datadir/password.txt"
+      - "/__BAS__/validator_3:/datadir"
+      - "/__BAS__/genesis/devnet.json:/datadir/devnet.json"
+      - "/__BAS__/genesis/keystore:/datadir/keystore"
+      - "/__BAS__/genesis/password.txt:/datadir/password.txt"
     restart: always
   validator_4:
     image: bas-template-bsc:latest
@@ -98,10 +102,10 @@ services:
       - "--syncmode=full"
       - "--networkid=17243"
     volumes:
-      - "/tmp/__BAS__/validator_4:/datadir"
-      - "/tmp/__BAS__/genesis/devnet.json:/datadir/devnet.json"
-      - "/tmp/__BAS__/genesis/keystore:/datadir/keystore"
-      - "/tmp/__BAS__/genesis/password.txt:/datadir/password.txt"
+      - "/__BAS__/validator_4:/datadir"
+      - "/__BAS__/genesis/devnet.json:/datadir/devnet.json"
+      - "/__BAS__/genesis/keystore:/datadir/keystore"
+      - "/__BAS__/genesis/password.txt:/datadir/password.txt"
     restart: always
   validator_5:
     image: bas-template-bsc:latest
@@ -118,10 +122,10 @@ services:
       - "--syncmode=full"
       - "--networkid=17243"
     volumes:
-      - "/tmp/__BAS__/validator_5:/datadir"
-      - "/tmp/__BAS__/genesis/devnet.json:/datadir/devnet.json"
-      - "/tmp/__BAS__/genesis/keystore:/datadir/keystore"
-      - "/tmp/__BAS__/genesis/password.txt:/datadir/password.txt"
+      - "/__BAS__/validator_5:/datadir"
+      - "/__BAS__/genesis/devnet.json:/datadir/devnet.json"
+      - "/__BAS__/genesis/keystore:/datadir/keystore"
+      - "/__BAS__/genesis/password.txt:/datadir/password.txt"
     restart: always
 
   # nginx:

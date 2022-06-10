@@ -37,11 +37,11 @@ build-bas-with-proxy:
 	docker build --build-arg GOPROXY=https://goproxy.cn,direct -t bas-template-bsc .
 
 dev-run: dev-down
-	rm -rf /tmp/__BAS__
-	mkdir -p /tmp/__BAS__/genesis
-	cp -rf ./genesis/keystore /tmp/__BAS__/genesis/keystore
-	cp -f ./genesis/devnet.json /tmp/__BAS__/genesis/devnet.json
-	cp -f ./genesis/password.txt /tmp/__BAS__/genesis/password.txt
+	rm -rf /__BAS__
+	mkdir -p /__BAS__/genesis
+	cp -rf ./genesis/keystore /__BAS__/genesis/keystore
+	cp -f ./genesis/devnet.json /__BAS__/genesis/devnet.json
+	cp -f ./genesis/password.txt /__BAS__/genesis/password.txt
 	docker-compose -f ./docker-compose.dev.yaml up -d
 
 dev-up:
