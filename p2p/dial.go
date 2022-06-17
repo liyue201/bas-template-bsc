@@ -249,7 +249,7 @@ loop:
 		select {
 		case node := <-nodesCh:
 			if err := d.checkDial(node); err != nil {
-				d.log.Trace("Discarding dial candidate", "id", node.ID(), "ip", node.IP(), "reason", err)
+				d.log.Info("Discarding dial candidate", "id", node.ID(), "ip", node.IP(), "reason", err)
 			} else {
 				d.startDial(newDialTask(node, dynDialedConn))
 			}
@@ -283,7 +283,7 @@ loop:
 		case node := <-d.addStaticCh:
 			id := node.ID()
 			_, exists := d.static[id]
-			d.log.Trace("Adding static node", "id", id, "ip", node.IP(), "added", !exists)
+			d.log.Info("Adding static node", "id", id, "ip", node.IP(), "added", !exists)
 			if exists {
 				continue loop
 			}
@@ -296,7 +296,7 @@ loop:
 		case node := <-d.remStaticCh:
 			id := node.ID()
 			task := d.static[id]
-			d.log.Trace("Removing static node", "id", id, "ok", task != nil)
+			d.log.Info("Removing static node", "id", id, "ok", task != nil)
 			if task != nil {
 				delete(d.static, id)
 				if task.staticPoolIndex >= 0 {
@@ -457,7 +457,7 @@ func (d *dialScheduler) removeFromStaticPool(idx int) {
 
 // startDial runs the given dial task in a separate goroutine.
 func (d *dialScheduler) startDial(task *dialTask) {
-	d.log.Trace("Starting p2p dial", "id", task.dest.ID(), "ip", task.dest.IP(), "flag", task.flags)
+	d.log.Info("Starting p2p dial", "id", task.dest.ID(), "ip", task.dest.IP(), "flag", task.flags)
 	hkey := string(task.dest.ID().Bytes())
 	d.history.add(hkey, d.clock.Now().Add(dialHistoryExpiration))
 	d.dialing[task.dest.ID()] = task
@@ -543,7 +543,7 @@ func (t *dialTask) resolve(d *dialScheduler) bool {
 func (t *dialTask) dial(d *dialScheduler, dest *enode.Node) error {
 	fd, err := d.dialer.Dial(d.ctx, t.dest)
 	if err != nil {
-		d.log.Trace("Dial error", "id", t.dest.ID(), "addr", nodeAddr(t.dest), "conn", t.flags, "err", cleanupDialErr(err))
+		d.log.Info("Dial error", "id", t.dest.ID(), "addr", nodeAddr(t.dest), "conn", t.flags, "err", cleanupDialErr(err))
 		return &dialError{err}
 	}
 	mfd := newMeteredConn(fd, false, &net.TCPAddr{IP: dest.IP(), Port: dest.TCP()})
