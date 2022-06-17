@@ -26,7 +26,9 @@ services:
       - "8545:8545"
       - "8546:8546"
     restart: always
-
+    networks:
+      node_network:
+        
   validator_1:
     image: bas-template-bsc:latest
     command:
@@ -47,6 +49,9 @@ services:
       - "/__BAS__/genesis/keystore:/datadir/keystore"
       - "/__BAS__/genesis/password.txt:/datadir/password.txt"
     restart: always
+    networks:
+      node_network:
+
   validator_2:
     image: bas-template-bsc:latest
     command:
@@ -67,6 +72,9 @@ services:
       - "/__BAS__/genesis/keystore:/datadir/keystore"
       - "/__BAS__/genesis/password.txt:/datadir/password.txt"
     restart: always
+    networks:
+      node_network:
+
   validator_3:
     image: bas-template-bsc:latest
     command:
@@ -87,6 +95,9 @@ services:
       - "/__BAS__/genesis/keystore:/datadir/keystore"
       - "/__BAS__/genesis/password.txt:/datadir/password.txt"
     restart: always
+    networks:
+      node_network:
+
   validator_4:
     image: bas-template-bsc:latest
     command:
@@ -107,6 +118,9 @@ services:
       - "/__BAS__/genesis/keystore:/datadir/keystore"
       - "/__BAS__/genesis/password.txt:/datadir/password.txt"
     restart: always
+    networks:
+      node_network:
+
   validator_5:
     image: bas-template-bsc:latest
     command:
@@ -127,6 +141,8 @@ services:
       - "/__BAS__/genesis/keystore:/datadir/keystore"
       - "/__BAS__/genesis/password.txt:/datadir/password.txt"
     restart: always
+    networks:
+      node_network:
 
   # nginx:
   #   image: nginx
@@ -139,3 +155,11 @@ services:
 
 volumes:
   postgresql_data: { }
+
+networks:
+  node_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 72.28.0.0/24
+          gateway: 72.28.1.1
