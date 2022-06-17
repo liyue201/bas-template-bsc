@@ -28,7 +28,7 @@ services:
     restart: always
     networks:
       node_network:
-        
+
   validator_1:
     image: bas-template-bsc:latest
     command:
@@ -161,5 +161,5 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 72.28.0.0/24
-          gateway: 72.28.1.1
+        - subnet: 72.28.0.0/16
+          gateway: 72.28.0.1
